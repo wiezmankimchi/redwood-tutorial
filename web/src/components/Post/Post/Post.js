@@ -1,6 +1,8 @@
+import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
-import { Link, routes, navigate } from '@redwoodjs/router'
+
+import { timeTag } from 'src/utils/timeTag'
 
 const DELETE_POST_MUTATION = gql`
   mutation DeletePostMutation($id: Int!) {
@@ -10,25 +12,25 @@ const DELETE_POST_MUTATION = gql`
   }
 `
 
-const jsonDisplay = (obj) => {
-  return (
-    <pre>
-      <code>{JSON.stringify(obj, null, 2)}</code>
-    </pre>
-  )
-}
+// const jsonDisplay = (obj) => {
+//   return (
+//     <pre>
+//       <code>{JSON.stringify(obj, null, 2)}</code>
+//     </pre>
+//   )
+// }
 
-const timeTag = (datetime) => {
-  return (
-    <time dateTime={datetime} title={datetime}>
-      {new Date(datetime).toUTCString()}
-    </time>
-  )
-}
+// const timeTag = (datetime) => {
+//   return (
+//     <time dateTime={datetime} title={datetime}>
+//       {new Date(datetime).toUTCString()}
+//     </time>
+//   )
+// }
 
-const checkboxInputTag = (checked) => {
-  return <input type="checkbox" checked={checked} disabled />
-}
+// const checkboxInputTag = (checked) => {
+//   return <input type="checkbox" checked={checked} disabled />
+// }
 
 const Post = ({ post }) => {
   const [deletePost] = useMutation(DELETE_POST_MUTATION, {
@@ -64,15 +66,24 @@ const Post = ({ post }) => {
             </tr>
             <tr>
               <th>Body</th>
-              <td>{post.body}</td>
+              <td className="">{post.body}</td>
             </tr>
             <tr>
-              <th>Created at</th>
+              <th>Image URL</th>
+              <td>{post.imgURL}</td>
+            </tr>
+            <tr>
+              <th>Created</th>
               <td>{timeTag(post.createdAt)}</td>
+            </tr>
+            <tr>
+              <th>Updated</th>
+              <td>{post.updatedAt ? timeTag(post.updatedAt) : ''}</td>
             </tr>
           </tbody>
         </table>
       </div>
+
       <nav className="rw-button-group">
         <Link
           to={routes.editPost({ id: post.id })}
@@ -80,13 +91,12 @@ const Post = ({ post }) => {
         >
           Edit
         </Link>
-        <a
-          href="#"
+        <button
           className="rw-button rw-button-red"
           onClick={() => onDeleteClick(post.id)}
         >
           Delete
-        </a>
+        </button>
       </nav>
     </>
   )

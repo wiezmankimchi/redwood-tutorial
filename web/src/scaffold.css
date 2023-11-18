@@ -59,12 +59,13 @@
   margin-left: 1rem;
   margin-right: 1rem;
   padding-bottom: 1rem;
+  border-width:1px;
 }
 .rw-segment {
   background-color: #fff;
   border-width: 1px;
   border-radius: 0.5rem;
-  overflow: hidden;
+  overflow: scroll;
 }
 .rw-segment-header {
   background-color: #e2e8f0;
@@ -230,16 +231,16 @@
   overflow-x: scroll;
 }
 .rw-table-wrapper-responsive .rw-table {
-  min-width: 48rem;
+  /* min-width: 48rem; */
 }
 .rw-table {
   table-layout: auto;
-  width: 100%;
+  /* width: 100%; */
   font-size: 0.875rem;
 }
 .rw-table th,
 .rw-table td {
-  padding: 0.75rem;
+  padding: 0.5rem;
 }
 .rw-table thead tr {
   background-color: #e2e8f0;
@@ -255,11 +256,11 @@
 .rw-table tbody th {
   text-align: right;
 }
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   .rw-table tbody th {
     width: 20%;
   }
-}
+} */
 .rw-table tbody tr {
   background-color: #f7fafc;
   border-top-width: 1px;

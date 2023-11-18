@@ -3,11 +3,25 @@ export const schema = gql`
     id: Int!
     name: String
     email: String!
-    # we never want to make these publicly available via GraphQL for security!
-    # hashedPassword: String!
-    # salt: String!
-    # resetToken: String
-    # resetTokenExpiresAt: DateTime
+    hashedPassword: String!
+    salt: String!
+    resetToken: String
+    resetTokenExpiresAt: DateTime
+    role: Role!
+    langPref: Languages!
+  }
+
+  enum Role {
+    CONTRIBUTER
+    EDITOR
+    USER
+    ADMIN
+    VIEWER
+  }
+
+  enum Languages {
+    en
+    he
   }
 
   type Query {
@@ -18,19 +32,23 @@ export const schema = gql`
   input CreateUserInput {
     name: String
     email: String!
-    # hashedPassword: String!
-    # salt: String!
-    # resetToken: String
-    # resetTokenExpiresAt: DateTime
+    hashedPassword: String!
+    salt: String!
+    resetToken: String
+    resetTokenExpiresAt: DateTime
+    role: Role!
+    langPref: Languages!
   }
 
   input UpdateUserInput {
     name: String
     email: String
-    # hashedPassword: String
-    # salt: String
-    # resetToken: String
-    # resetTokenExpiresAt: DateTime
+    hashedPassword: String
+    salt: String
+    resetToken: String
+    resetTokenExpiresAt: DateTime
+    role: Role
+    langPref: Languages
   }
 
   type Mutation {

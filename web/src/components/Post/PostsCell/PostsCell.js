@@ -8,7 +8,9 @@ export const QUERY = gql`
       id
       title
       body
+      imgURL
       createdAt
+      updatedAt
     }
   }
 `

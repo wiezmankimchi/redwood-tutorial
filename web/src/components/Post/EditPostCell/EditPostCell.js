@@ -1,6 +1,7 @@
+import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
-import { navigate, routes } from '@redwoodjs/router'
+
 import PostForm from 'src/components/Post/PostForm'
 
 export const QUERY = gql`
@@ -9,7 +10,9 @@ export const QUERY = gql`
       id
       title
       body
+      imgURL
       createdAt
+      updatedAt
     }
   }
 `
@@ -20,6 +23,7 @@ const UPDATE_POST_MUTATION = gql`
       title
       body
       createdAt
+      updatedAt
     }
   }
 `
@@ -35,6 +39,7 @@ export const Success = ({ post }) => {
   })
 
   const onSave = (input, id) => {
+    input.updatedAt = new Date()
     updatePost({ variables: { id, input } })
   }
 

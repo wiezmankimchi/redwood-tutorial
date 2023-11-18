@@ -1,8 +1,9 @@
+import { Link, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
-import { Link, routes } from '@redwoodjs/router'
 
 import { QUERY } from 'src/components/Post/PostsCell'
+import { timeTag } from 'src/utils/timeTag'
 
 const DELETE_POST_MUTATION = gql`
   mutation DeletePostMutation($id: Int!) {
@@ -22,21 +23,13 @@ const truncate = (text) => {
   return output
 }
 
-const jsonTruncate = (obj) => {
-  return truncate(JSON.stringify(obj, null, 2))
-}
+// const jsonTruncate = (obj) => {
+//   return truncate(JSON.stringify(obj, null, 2))
+// }
 
-const timeTag = (datetime) => {
-  return (
-    <time dateTime={datetime} title={datetime}>
-      {new Date(datetime).toUTCString()}
-    </time>
-  )
-}
-
-const checkboxInputTag = (checked) => {
-  return <input type="checkbox" checked={checked} disabled />
-}
+// const checkboxInputTag = (checked) => {
+//   return <input type="checkbox" checked={checked} disabled />
+// }
 
 const PostsList = ({ posts }) => {
   const [deletePost] = useMutation(DELETE_POST_MUTATION, {
@@ -61,22 +54,39 @@ const PostsList = ({ posts }) => {
       <table className="rw-table">
         <thead>
           <tr>
-            <th>Id</th>
             <th>Title</th>
-            <th>Body</th>
-            <th>Created at</th>
+            <th className="hidden md:table-cell">Body</th>
+            <th>Image</th>
+            <th className="hidden lg:table-cell">Created</th>
+            <th className="hidden lg:table-cell">Updated</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
         <tbody>
           {posts.map((post) => (
             <tr key={post.id}>
-              <td>{truncate(post.id)}</td>
               <td>{truncate(post.title)}</td>
-              <td>{truncate(post.body)}</td>
-              <td>{timeTag(post.createdAt)}</td>
+              <td className="hidden md:table-cell">{truncate(post.body)}</td>
+              {/* <td>{truncate(post.imgURL)}</td> */}
+              <td className="w-32 h-32">
+                {post.imgURL ? (
+                  <img
+                    src={post.imgURL}
+                    alt={post.title}
+                    className=" w-30 h-30 rounded-md"
+                  />
+                ) : (
+                  ''
+                )}
+              </td>
+              <td className="hidden lg:table-cell">
+                {timeTag(post.createdAt, true)}
+              </td>
+              <td className="hidden lg:table-cell">
+                {post.updatedAt ? timeTag(post.updatedAt, true) : ''}
+              </td>
               <td>
-                <nav className="rw-table-actions">
+                <nav className="rw-table-actions flex-col justify-center lg:flex-row">
                   <Link
                     to={routes.post({ id: post.id })}
                     title={'Show post ' + post.id + ' detail'}
@@ -91,14 +101,12 @@ const PostsList = ({ posts }) => {
                   >
                     Edit
                   </Link>
-                  <a
-                    href="#"
-                    title={'Delete post ' + post.id}
+                  <button
                     className="rw-button rw-button-small rw-button-red"
                     onClick={() => onDeleteClick(post.id)}
                   >
                     Delete
-                  </a>
+                  </button>
                 </nav>
               </td>
             </tr>
